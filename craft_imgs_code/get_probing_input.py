@@ -7,14 +7,14 @@ generating probing input from dataset
 """
 
 
-def select_input(root: str = imgs_root):
+def select_input(root: str = imgs_root, baseimage_num=100):
     """select images from VOC-Segmentation dataset
     """
     imgs = []
     # TODO fix the code about select strategy
     all_imgs = os.listdir(root)
-    imgs = random.sample(all_imgs, 100)
-    logging.info(f'numbers of images: {len(imgs)}')
+    imgs = random.sample(all_imgs, baseimage_num)
+    logging.info(f'number of base images: {len(imgs)}\n')
     for i in range(len(imgs)):
         imgs[i] = os.path.join(root, imgs[i])
     return imgs

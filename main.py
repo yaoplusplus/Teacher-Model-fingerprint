@@ -19,17 +19,19 @@ logging.basicConfig(level=logging.INFO,
                     )
 
 
-def get_test_imgs(root=craft_imgs_root):
+def get_test_imgs(root=craft_imgs_root, model='alexnet'):
     """
     加载 {model}/2022-11-14_21_04_57下所有图片
+    :param model: the model the test_image should be tested on
     :param root: root path of  crafted images
     :return: images list loaded with PIL.Image
     """
-    final_root = f'{root}/2022-11-14_21_04_57'
+    logging.info('load images for test resnet18')
+    final_root = f'{root}/{model}/2023-02-28_20_23_39'
     filenames = os.listdir(final_root)
     imgs = []
     for file in filenames:
-        img = Image.open(f'{final_root}/{file}/30000.jpg')
+        img = Image.open(f'{final_root}/{file}/60000.jpg')
         file = Image.open(f'{imgs_root}/{file}')
         temp = (file, img)
         imgs.append(temp)
@@ -55,13 +57,13 @@ def main(model, dataset):
     # fine-tune model on dataset
     pass
     # make test
+    model_name = model
     loaded_models = load_model.load_finetune_model(model_name=model, dataset=dataset)
     for model in loaded_models:
-        test_imgs = get_test_imgs()
+        test_imgs = get_test_imgs(model=model_name)
         acc = test(model, test_imgs)
-        logging.info(f'acc: {acc * 100:.2f}%')
+        logging.info(f'acc: {acc * 100:.2f}%\n')
 
 
 if __name__ == "__main__":
-    for i in range(4):
-        main('alexnet', 'CIFAR10')
+        main('resnet18', 'CIFAR10')

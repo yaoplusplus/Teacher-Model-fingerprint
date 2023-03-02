@@ -23,13 +23,15 @@ import torchvision.transforms as trans
 import warnings
 from PIL import Image
 import matplotlib.pyplot as plt
+from torch.utils.tensorboard import SummaryWriter
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 # 人造数据的路径
 craft_imgs_root = 'D:/Codes/mycode/Teacher-Fingerprinting/craft_images'
 # 背景知识数据集的路径
 imgs_root = 'D:/data/VOC-Segmentation/VOCdevkit/VOC2012/JPEGImages'
-
+# tensorboard数据的保存路径
+tensorboard_log_directory_base = '../tensorboard'
 assert os.path.exists(imgs_root)
 assert os.path.exists(craft_imgs_root)
 input_size = {
@@ -39,10 +41,9 @@ input_size = {
 
 
 # last_linear_layers = {'alexnet': 'classifier', 'resnet18': 'fc'}
-
-
 def set_log_level(level_):
     logging.basicConfig(level=level_,
+                        # todo 文本的对齐
                         format='%(asctime)s %(filename)20s %(levelname)7s | %(message)30s',
                         datefmt='%d %b %Y %H:%M:%S',
                         )
@@ -1094,6 +1095,7 @@ def show(tensor: torch.Tensor) -> None:
 def save_tensor2img(tensor: torch.Tensor, path):
     """
     use plt method to save image with type of tensor
+    :param path: path of saved_image
     :param tensor: the tensor can store on cuda and can with_grad
     :return: None
     """
@@ -1145,14 +1147,15 @@ def model_arch():
     model = models.resnet18(pretrained=False).to(device)
     summary(model, (3, 244, 244))
 
+
 def test_img_save():
     if not os.path.exists('./test_tensor'):
-
-    test_tensor = torch.randn([1, 3, 256, 256])
+        test_tensor = torch.randn([1, 3, 256, 256])
+        pass
 
 
 if __name__ == '__main__':
-    test_img_save()
+    # test_img_save()
     # <editor-fold desc="折叠后显示的内容">
     '''
     code
@@ -1163,3 +1166,4 @@ if __name__ == '__main__':
     code
     '''
     # </editor-fold>
+    print(get_time())
